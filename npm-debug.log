@@ -1,0 +1,35 @@
+0 info it worked if it ends with ok
+1 verbose cli [ 'C:\\AresFlurriesSite\\nodejs\\node.exe',
+1 verbose cli   'C:\\Users\\12009\\AppData\\Roaming\\npm\\node_modules\\npm\\bin\\npm-cli.js',
+1 verbose cli   'start' ]
+2 info using npm@4.0.2
+3 info using node@v8.9.0
+4 verbose run-script [ 'prestart', 'start', 'poststart' ]
+5 info lifecycle myfirstexpress@0.0.0~prestart: myfirstexpress@0.0.0
+6 silly lifecycle myfirstexpress@0.0.0~prestart: no script for prestart, continuing
+7 info lifecycle myfirstexpress@0.0.0~start: myfirstexpress@0.0.0
+8 verbose lifecycle myfirstexpress@0.0.0~start: unsafe-perm in lifecycle true
+9 verbose lifecycle myfirstexpress@0.0.0~start: PATH: C:\Users\12009\AppData\Roaming\npm\node_modules\npm\bin\node-gyp-bin;C:\AresFlurriesSite\myapp\myfirstexpress\node_modules\.bin;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0\;D:\SDK\grails-2.4.4\bin;D:\SVN\bin;D:\phpStudy\php\php-5.6.27-nts;C:\Program Files (x86)\NVIDIA Corporation\PhysX\Common;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;C:\Program Files (x86)\Git\cmd;C:\AresFlurriesSite\nodejs\;C:\Users\12009\AppData\Local\Microsoft\WindowsApps;C:\Users\12009\AppData\Roaming\npm
+10 verbose lifecycle myfirstexpress@0.0.0~start: CWD: C:\AresFlurriesSite\myapp\myfirstexpress
+11 silly lifecycle myfirstexpress@0.0.0~start: Args: [ '/d /s /c', 'node ./bin/www' ]
+12 verbose stack Error: kill ENOSYS
+12 verbose stack     at Object._errnoException (util.js:1024:11)
+12 verbose stack     at process.kill (internal/process.js:183:18)
+12 verbose stack     at process.listener (C:\Users\12009\AppData\Roaming\npm\node_modules\npm\node_modules\npmlog\node_modules\gauge\node_modules\signal-exit\index.js:86:15)
+12 verbose stack     at emitNone (events.js:111:20)
+12 verbose stack     at process.emit (events.js:208:7)
+12 verbose stack     at processEmit (C:\Users\12009\AppData\Roaming\npm\node_modules\npm\node_modules\npmlog\node_modules\gauge\node_modules\signal-exit\index.js:146:32)
+12 verbose stack     at processEmit (C:\Users\12009\AppData\Roaming\npm\node_modules\npm\node_modules\npm-registry-client\node_modules\npmlog\node_modules\gauge\node_modules\signal-exit\index.js:146:32)
+12 verbose stack     at Signal.wrap.onsignal (internal/process.js:208:44)
+13 verbose cwd C:\AresFlurriesSite\myapp\myfirstexpress
+14 error Windows_NT 10.0.15063
+15 error argv "C:\\AresFlurriesSite\\nodejs\\node.exe" "C:\\Users\\12009\\AppData\\Roaming\\npm\\node_modules\\npm\\bin\\npm-cli.js" "start"
+16 error node v8.9.0
+17 error npm  v4.0.2
+18 error code ENOSYS
+19 error errno ENOSYS
+20 error syscall kill
+21 error kill ENOSYS
+22 error If you need help, you may report this error at:
+22 error     <https://github.com/npm/npm/issues>
+23 verbose exit [ 1, true ]
