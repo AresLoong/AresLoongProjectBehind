@@ -4,6 +4,7 @@ var mongoose = require('mongoose');
 var UsersSchema = new mongoose.Schema({
     username: String,
     password: String,
+    securityCode: String,
     meta: {
         createAt: {
             type: Date,
@@ -39,8 +40,17 @@ UsersSchema.statics = {
         return this
             .findOne({_id: id})
             .exec(cb)
+    },
+    findByUserName: function (username, cb) { //根据username查询单条数据
+        return this
+            .findOne({username: username})
+            .exec(cb)
+    },
+    addUser: function (username, password, cb) { // 创建一组user对象置入model
+        return this
+            .create({username: username,password: password})
     }
-}
+};
 
 //暴露出去的方法
 module.exports = UsersSchema

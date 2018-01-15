@@ -74,5 +74,111 @@ router.get('/users', function(req, res, next) {
         })
     }
 
-})
+});
+//注册接口入口,给前端的接口url从这里生成
+router.get('/register', function(req, res, next) {
+    Users.findByUserName(req.query.phone,function(err, doc) {
+        if(err) {
+            console.log(err);
+            // res.send(504);
+            // res.render('data',{message: '服务器错误'})
+        }
+        if(doc){
+            if(req.query.phone == doc.username){
+                res.json({data:
+                    {
+                        code:'register error',
+                        message:'用户名已被注册',
+                        msgcode:'register error',
+                        state:'401',
+                        type:'error'
+                    }
+                })
+            }
+        }else{
+
+
+            let newStudent = [{
+                username: req.query.phone,
+                password: req.query.password,
+                securityCode: req.query.securityCode
+            }]
+            Users.create(newStudent, (err) => {
+                if(err) {
+                    console.log(err)
+                }
+                // res.send("")
+                res.json({data:
+                {
+                    code:'register success',
+                    message:'注册成功',
+                    msgcode:'register success',
+                    state:'200',
+                    type:'success'
+                }
+            })
+        })
+
+
+        }
+
+        // res.render('users',{title: '用户列表', users: users})  //这里也可以json的格式直接返回数据res.json({data: users});
+    })
+
+});
+router.get('/forget', function(req, res, next) {
+    Users.findByUserName(req.query.phone,function(err, doc) {
+        if(err) {
+            console.log(err);
+            // res.send(504);
+            // res.render('data',{message: '服务器错误'})
+        }
+        if(doc){
+            if(req.query.phone == doc.username && req.query.securityCode == doc.securityCode){
+                let updateId =  {_id:doc._id},
+                    updateStudent = {$set: {
+                        password: req.query.password,
+                        meta:{
+                            createAt: doc.meta.createAt,
+                            updateAt: Date.now()
+                        }}
+                };
+                Users.update(updateId, updateStudent, (err, result) => {
+                    if(err) {
+                        console.log(err)
+                    }
+                    res.json({data:
+                    {
+                        code:'Get Back success',
+                        message:'找回成功',
+                        msgcode:'Get Back success',
+                        state:'200',
+                        type:'success'
+                    }
+                })
+            })
+            }else{
+                res.json({data:
+                    {
+                        code:'securityCode error',
+                        message:'安全码错误',
+                        msgcode:'securityCode error',
+                        state:'401',
+                        type:'error'
+                    }
+                })
+            }
+        }else{
+            res.json({data:
+                {
+                    code:'No Find User',
+                    message:'用户名错误',
+                    msgcode:'No Find User',
+                    state:'401',
+                    type:'error'
+                }
+            })
+        }
+    });
+});
 module.exports = router;
