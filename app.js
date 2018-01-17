@@ -4,10 +4,10 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
+var session = require('express-session');
 
 var index = require('./routes/index');
 var users = require('./routes/users');
-// var session = require('express-session');
 //GY,导入mongoose连接mongodb数据库,开始
 var mongoose = require('mongoose');
 
@@ -49,6 +49,20 @@ app.set('view engine', 'jade');
 
 // uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
+
+
+//这里传入了一个密钥加session id
+app.use(cookieParser());
+//使用就靠这个中间件
+app.use(session({
+    secret: 'recommand 128 bytes random string',
+    // name: 'connect.sid',   //这里的name值得是cookie的name，默认cookie的name是：connect.sid
+    cookie: {maxAge: 80000 }  //设置maxAge是80000ms，即80s后session和相应的cookie失效过期
+    // resave: false,
+    // saveUninitialized: true
+}));
+
+
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));

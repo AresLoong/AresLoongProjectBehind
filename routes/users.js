@@ -3,13 +3,21 @@ var mongoose = require('mongoose');//导入mongoose模块
 
 var Users = require('../modules/users');//导入模型数据模块
 var router = express.Router();
-
+var crypto = require('crypto');
+function md5(userId){
+    //生成口令的散列值
+    var md5 = crypto.createHash('md5');   //crypto模块功能是加密并生成各种散列,此处所示为MD5方式加密
+    var end_paw= md5.update(userId.toString()).digest('hex');//加密后的密码
+    return end_paw;
+};
 /* GET users listing. */
 router.get('/', function(req, res, next) {
   res.send('respond with a resource');
 });
 //查询所有用户数据
 router.get('/users', function(req, res, next) {
+    console.log(req.session);
+    console.log(req.session.secret);
     // Users.fetch(function(err, users) {
     //     if(err) {
     //         console.log(err);
@@ -38,15 +46,43 @@ router.get('/users', function(req, res, next) {
             }
             if(users){
                 if(req.query.phone == users.username && req.query.password == users.password){
-                    res.json({data:
+                    req.session.sessionId = md5(Math.random());
+
+
+                    let updateId =  {_id:users._id},
+                        tokenSet = {$set: {
+                            token:{
+                                sessionId: req.session.sessionId,
+                                sessionUpdateAt: Date.now()
+                            }
+                            }
+                        };
+
+
+
+                    Users.update(updateId, tokenSet, function(err, result) {
+                        if(err) {
+                            console.log(err)
+                        }
+                        console.log(result);
+                        // req.session.sessionId = result.token.sessionId;
+                        res.json({data:
                         {
                             code:'login success',
                             message:'登陆成功',
                             msgcode:'login success',
                             state:'200',
-                            type:'success'
+                            type:'success',
+                            token: req.session.sessionId
                         }
                     })
+                })
+
+
+
+
+
+
                 }else{
                     res.json({data:
                         {

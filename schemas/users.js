@@ -14,6 +14,12 @@ var UsersSchema = new mongoose.Schema({
             type: Date,
             default: Date.now()
         }
+    },
+    token: {
+        sessionId: String,
+        sessionUpdateAt: {
+            type: Date
+        }
     }
 })
 
