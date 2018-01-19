@@ -14,7 +14,7 @@ function md5(userId){
 router.get('/', function(req, res, next) {
   res.send('respond with a resource');
 });
-//查询所有用户数据
+//登录接口
 router.get('/users', function(req, res, next) {
     console.log(req.session);
     console.log(req.session.secret);
@@ -162,6 +162,7 @@ router.get('/register', function(req, res, next) {
     })
 
 });
+// 忘记密码接口
 router.get('/forget', function(req, res, next) {
     Users.findByUserName(req.query.phone,function(err, doc) {
         if(err) {
@@ -214,59 +215,6 @@ router.get('/forget', function(req, res, next) {
                     type:'error'
                 }
             })
-        }
-    });
-});
-router.get('/peopleCounting', function(req, res, next) {
-    Users.findPeopleCounting(req.query.peopleCountingSetting,function(err, doc) {
-        if(err) {
-            console.log(err);
-            // res.send(504);
-            // res.render('data',{message: '服务器错误'})
-        }
-        if(doc){
-
-                let peopleCountingId =  {_id:doc._id},
-                    updatePeopleCounting = {$set: {
-                        peopleCounting: doc.peopleCounting + 1
-                        }
-                    };
-                Users.update(peopleCountingId, updatePeopleCounting,function(err, result) {
-                    if(err) {
-                        console.log(err)
-                    }
-                    res.json({data:
-                        {
-                            code:'Update PeopleCounting success',
-                            message: doc.peopleCounting,
-                            msgcode:'Update PeopleCounting success',
-                            state:'200',
-                            type:'success'
-                        }
-                    })
-                })
-        }else{
-
-            let CreatePeopleCounting = [{
-                peopleCountingSetting: 'peopleCountingSetting',
-                peopleCounting: 0
-            }]
-            Users.create(CreatePeopleCounting,function(err) {
-                if(err) {
-                    console.log(err)
-                }
-                // res.send("")
-                res.json({data:
-                    {
-                        code:'Create PeopleCounting success',
-                        message: 0,
-                        msgcode:'Create PeopleCounting success',
-                        state:'200',
-                        type:'success'
-                    }
-                })
-            })
-
         }
     });
 });
