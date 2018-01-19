@@ -139,7 +139,7 @@ router.get('/register', function(req, res, next) {
                 password: req.query.password,
                 securityCode: req.query.securityCode
             }]
-            Users.create(newStudent, (err) => {
+            Users.create(newStudent,function(err) {
                 if(err) {
                     console.log(err)
                 }
@@ -179,7 +179,7 @@ router.get('/forget', function(req, res, next) {
                             updateAt: Date.now()
                         }}
                 };
-                Users.update(updateId, updateStudent, (err, result) => {
+                Users.update(updateId, updateStudent,function(err, result) {
                     if(err) {
                         console.log(err)
                     }
@@ -214,6 +214,62 @@ router.get('/forget', function(req, res, next) {
                     type:'error'
                 }
             })
+        }
+    });
+});
+router.get('/peopleCounting', function(req, res, next) {
+    Users.findPeopleCounting(req.query.peopleCountingSetting,function(err, doc) {
+        if(err) {
+            console.log(err);
+            // res.send(504);
+            // res.render('data',{message: '服务器错误'})
+        }
+        console.log("bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb")
+        console.log(req.query.peopleCountingSetting)
+        console.log(doc);
+        if(doc){
+
+                let peopleCountingId =  {_id:doc._id},
+                    updatePeopleCounting = {$set: {
+                        peopleCounting: doc.peopleCounting + 1
+                        }
+                    };
+                Users.update(peopleCountingId, updatePeopleCounting,function(err, result) {
+                    if(err) {
+                        console.log(err)
+                    }
+                    res.json({data:
+                        {
+                            code:'Update PeopleCounting success',
+                            message: doc.peopleCounting,
+                            msgcode:'Update PeopleCounting success',
+                            state:'200',
+                            type:'success'
+                        }
+                    })
+                })
+        }else{
+
+            let CreatePeopleCounting = [{
+                peopleCountingSetting: 'peopleCountingSetting',
+                peopleCounting: 0
+            }]
+            Users.create(CreatePeopleCounting,function(err) {
+                if(err) {
+                    console.log(err)
+                }
+                // res.send("")
+                res.json({data:
+                    {
+                        code:'Create PeopleCounting success',
+                        message: 0,
+                        msgcode:'Create PeopleCounting success',
+                        state:'200',
+                        type:'success'
+                    }
+                })
+            })
+
         }
     });
 });

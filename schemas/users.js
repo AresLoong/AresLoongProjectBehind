@@ -5,6 +5,8 @@ var UsersSchema = new mongoose.Schema({
     username: String,
     password: String,
     securityCode: String,
+    peopleCountingSetting: String,
+    peopleCounting: Number,
     meta: {
         createAt: {
             type: Date,
@@ -52,9 +54,10 @@ UsersSchema.statics = {
             .findOne({username: username})
             .exec(cb)
     },
-    addUser: function (username, password, cb) { // 创建一组user对象置入model
+    findPeopleCounting: function (peopleCountingSetting, cb) { // 创建一组user对象置入model
         return this
-            .create({username: username,password: password})
+            .findOne({peopleCountingSetting: peopleCountingSetting})
+            .exec(cb)
     }
 };
 
