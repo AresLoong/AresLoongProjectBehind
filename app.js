@@ -8,6 +8,7 @@ var session = require('express-session');
 
 var index = require('./routes/index');
 var users = require('./routes/users');
+var statistics = require('./routes/statistics');
 //GY,导入mongoose连接mongodb数据库,开始
 var mongoose = require('mongoose');
 
@@ -80,6 +81,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', index);
 app.use('/users', users);
+app.use('/statistics', statistics);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

@@ -224,9 +224,6 @@ router.get('/peopleCounting', function(req, res, next) {
             // res.send(504);
             // res.render('data',{message: '服务器错误'})
         }
-        console.log("bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb")
-        console.log(req.query.peopleCountingSetting)
-        console.log(doc);
         if(doc){
 
                 let peopleCountingId =  {_id:doc._id},
