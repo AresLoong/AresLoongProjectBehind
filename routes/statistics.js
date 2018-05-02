@@ -11,7 +11,7 @@ function md5(userId){
     return end_paw;
 };
 /* GET users listing. */
-
+// 统计网站访问人数接口
 router.get('/peopleCounting', function(req, res, next) {
     Statistics.findPeopleCounting(req.query.peopleCountingSetting,function(err, doc) {
         if(err) {

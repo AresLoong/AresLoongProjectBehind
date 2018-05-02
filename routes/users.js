@@ -4,6 +4,7 @@ var mongoose = require('mongoose');//导入mongoose模块
 var Users = require('../modules/users');//导入模型数据模块
 var router = express.Router();
 var crypto = require('crypto');
+var cookieParser = require('cookie-parser');
 function md5(userId){
     //生成口令的散列值
     var md5 = crypto.createHash('md5');   //crypto模块功能是加密并生成各种散列,此处所示为MD5方式加密
@@ -14,10 +15,25 @@ function md5(userId){
 router.get('/', function(req, res, next) {
   res.send('respond with a resource');
 });
+//验证session登录接口
+router.get('/sessionCheckLogin', function(req, res, next){
+    let sess = req.session;
+    let loginUser = sess.loginUser;
+    let isLogined = !!loginUser;
+    let sessionID = sess.sessionID;
+    res.json({data:
+        {
+            isLogined: isLogined,
+            loginUser: loginUser || '',
+            sessionID: sessionID || '',
+            type:'success'
+        }
+    })
+});
 //登录接口
 router.get('/users', function(req, res, next) {
-    console.log(req.session);
-    console.log(req.session.secret);
+    // console.log(req.session);
+    // console.log(req.session.secret);
     // Users.fetch(function(err, users) {
     //     if(err) {
     //         console.log(err);
@@ -46,13 +62,13 @@ router.get('/users', function(req, res, next) {
             }
             if(users){
                 if(req.query.phone == users.username && req.query.password == users.password){
-                    req.session.sessionId = md5(Math.random());
-
-
+                    // let aresloongsecrt = md5(Math.random());
+                    //获取sessionID
+                    // let sessionID = req.sessionID;
                     let updateId =  {_id:users._id},
                         tokenSet = {$set: {
                             token:{
-                                sessionId: req.session.sessionId,
+                                sessionId: req.sessionID,
                                 sessionUpdateAt: Date.now()
                             }
                             }
@@ -66,15 +82,24 @@ router.get('/users', function(req, res, next) {
                         }
                         console.log(result);
                         // req.session.sessionId = result.token.sessionId;
-                        res.json({data:
-                        {
-                            code:'login success',
-                            message:'登陆成功',
-                            msgcode:'login success',
-                            state:'200',
-                            type:'success',
-                            token: req.session.sessionId
-                        }
+                        // res.cookie('aresloong-secrt',aresloongsecrt,{maxAge:15 * 60 * 1000,httpOnly:true});
+                        // res.cookie('rememberme', '1', { expires: new Date(Date.now() + 900000), httpOnly: true });
+                        req.session.regenerate(function(err) {
+                            req.session.loginUser = users.username;
+                            req.session.sessionID = req.sessionID;
+                            console.log(req);
+                            res.json({data:
+                                {
+                                    code:'login success',
+                                    message:'登陆成功',
+                                    msgcode:'login success',
+                                    state:'200',
+                                    type:'success',
+                                    loginUser: req.session.loginUser,
+                                    sessionID: req.sessionID
+                                }
+                        })
+
                     })
                 })
 
